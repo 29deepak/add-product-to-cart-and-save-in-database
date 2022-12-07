@@ -81,8 +81,9 @@ window.addEventListener("DOMContentLoaded",()=>{
                 const productHtml=`
                 <div>
                 <h1>${product.title}</h1>
-                <img src=${product.imageUrl}
-                <button> Add to Cart</button>
+                <img src=${product.imageUrl}>
+                <button onClick="addToCart(${product.id})"> Add To Cart</button>
+                
                 </div>`
                 parentSection.innerHTML +=productHtml
             
@@ -90,3 +91,27 @@ window.addEventListener("DOMContentLoaded",()=>{
         }
     })
 })
+function addToCart(productId){
+    axios.post("http://localhost:3000/cart",{productId:productId})
+    .then((response)=>{
+        console.log(response)
+        if(response.status===200){
+            notifyUsers(response.data.message)
+
+        }
+    })
+    .catch((err)=>{
+        notifyUsers(response.data.message)
+    })
+}
+function notifyUsers(message){
+        const container = document.getElementById('container');
+        const notification = document.createElement('div');
+        notification.classList.add('notification');
+        notification.innerHTML = `<h4>${message}<h4>`;
+        container.appendChild(notification);
+        setTimeout(()=>{
+            notification.remove();
+        },2500)
+
+}
