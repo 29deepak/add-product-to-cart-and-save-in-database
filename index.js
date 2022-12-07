@@ -67,3 +67,26 @@ parentContainer.addEventListener('click',(e)=>{
         e.target.parentNode.parentNode.remove()
     }
 })
+window.addEventListener("DOMContentLoaded",()=>{
+    axios.get("http://localhost:3000/products").then((data)=>{
+        console.log(data)
+        if(data.request.status==200){
+        
+            const products=data.data.products;
+            // console.log(products)
+            const parentSection=document.getElementById('Products')
+            // console.log(parentSection)
+            products.forEach(product=>{
+                // console.log(product)
+                const productHtml=`
+                <div>
+                <h1>${product.title}</h1>
+                <img src=${product.imageUrl}
+                <button> Add to Cart</button>
+                </div>`
+                parentSection.innerHTML +=productHtml
+            
+            })
+        }
+    })
+})
